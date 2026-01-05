@@ -18,7 +18,7 @@ interface QuizProps {
 
 export default function Quiz({ questions, onComplete }: QuizProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(questions.length).fill(-1));
+  const [selectedAnswers, setSelectedAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null));
   const [showResults, setShowResults] = useState(false);
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -41,7 +41,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
 
   const handleSubmit = () => {
     setShowResults(true);
-    const score = selectedAnswers.reduce((acc, answer, index) => {
+    const score = selectedAnswers.reduce((acc: number, answer, index) => {
       return acc + (answer === questions[index].correctAnswer ? 1 : 0);
     }, 0);
     const passed = score >= 3; // Pass with 3/5
@@ -49,7 +49,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
   };
 
   const calculateScore = () => {
-    return selectedAnswers.reduce((acc, answer, index) => {
+    return selectedAnswers.reduce((acc: number, answer, index) => {
       return acc + (answer === questions[index].correctAnswer ? 1 : 0);
     }, 0);
   };
@@ -76,14 +76,14 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
             <div className="space-y-4 text-left max-w-2xl mx-auto">
               {questions.map((question, index) => {
                 const userAnswer = selectedAnswers[index];
-                const isCorrect = userAnswer === question.correctAnswer;
+                const isCorrect = userAnswer !== null && userAnswer === question.correctAnswer;
 
                 return (
                   <div key={question.id} className={`p-4 rounded-lg border-2 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
                     <p className="font-semibold mb-2">Question {index + 1}: {question.question}</p>
                     <p className="text-sm text-gray-600">
                       Your answer: <span className={isCorrect ? 'text-green-700' : 'text-red-700'}>
-                        {question.options[userAnswer] || 'Not answered'}
+                        {userAnswer !== null ? question.options[userAnswer] : 'Not answered'}
                       </span>
                     </p>
                     {!isCorrect && (
@@ -102,7 +102,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
                   onClick={() => {
                     setShowResults(false);
                     setCurrentQuestion(0);
-                    setSelectedAnswers(new Array(questions.length).fill(-1));
+                    setSelectedAnswers(new Array(questions.length).fill(null));
                   }}
                 >
                   Retake Quiz
@@ -116,7 +116,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
   }
 
   const question = questions[currentQuestion];
-  const allAnswered = selectedAnswers.every(answer => answer !== -1);
+  const allAnswered = selectedAnswers.every(answer => answer !== null);
 
   return (
     <Card>
@@ -197,7 +197,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
             {currentQuestion < questions.length - 1 ? (
               <Button
                 onClick={handleNext}
-                disabled={selectedAnswers[currentQuestion] === -1}
+                disabled={selectedAnswers[currentQuestion] === null}
               >
                 Next
               </Button>
