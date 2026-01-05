@@ -1,31 +1,11 @@
 import Link from 'next/link';
-import { TrendingUp, BookOpen, Award, Users } from 'lucide-react';
+import { BookOpen, Award, Users } from 'lucide-react';
+import MainLayout from '@/components/shared/MainLayout';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header/Navigation */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <TrendingUp className="h-8 w-8 text-blue-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Learn Investing</h1>
-                <p className="text-xs text-gray-500">iiskills.cloud</p>
-              </div>
-            </div>
-            <nav className="hidden md:flex space-x-6">
-              <Link href="/modules" className="text-gray-700 hover:text-blue-600">Modules</Link>
-              <Link href="/news" className="text-gray-700 hover:text-blue-600">Market News</Link>
-              <Link href="/about" className="text-gray-700 hover:text-blue-600">About</Link>
-              <Link href="/login" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                Get Started
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <MainLayout>
+      <div className="bg-gradient-to-b from-blue-50 to-white">
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -128,18 +108,7 @@ export default function Home() {
           Enroll Now
         </Link>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400">
-            © 2024 Learn Investing - iiskills.cloud. All rights reserved.
-          </p>
-          <p className="text-gray-500 text-sm mt-2">
-            Part of the Indian Institute of Professional Skills Development
-          </p>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </MainLayout>
   );
 }
